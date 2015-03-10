@@ -1,0 +1,67 @@
+<project name="TestProject" default="dist" basedir=".">
+
+  <property name="src" location="src"/>
+  <property name="build" location="build"/>
+  <property name="dist"  location="dist"/>
+  <property name="lib"  location="lib"/>
+  <property name="jar"  location="jar"/>
+  <property name="config"  location="config"/>
+  <property name="tmp"  location="tmp"/>
+  <property name="test"  location="test"/>
+  
+
+  <path id="build.classpath">
+    <fileset dir="${lib}">
+    <include name="**/*.jar"/>
+    </fileset>
+  </path>
+
+  <target name="init" depends="clean">
+	<tstamp>
+	 <format property="component.timestamp" pattern="yyyy_MM_dd-hh:mm:ss aa"/>
+	</tstamp>
+    <mkdir dir="${build}"/>
+  </target>
+
+  <target name="compile" depends="init">
+    <javac srcdir="${src}" destdir="${build}" classpathref="build.classpath"/>
+  </target>
+
+
+ 
+  <target name="test" depends="compile">
+    <junit>
+   <classpath refid="build.classpath"/>
+  <formatter type="brief" usefile="false"/>
+    <batchtest>
+ 	 <fileset dir="${test}">
+ 		 <include name="${test}/com/test/*.java"/>
+  	</fileset>
+    </batchtest>
+   </junit>
+  </target>
+ 
+  <target name="jar" depends="test">
+    <mkdir dir="${jar}/lib"/>	
+    <jar jarfile="${jar}/lib/myProject.jar" basedir="${build}"/>
+  </target> 
+	
+  <target name="dist" depends="jar">
+    <mkdir dir="${tmp}/lib"/>
+
+    <copy file="${jar}/lib/myProject.jar" todir="${tmp}"/> 
+    <copy todir="${tmp}/lib">
+      <fileset dir="${lib}"/>
+    </copy>
+    <copy file="${config}/project.properties" todir="${tmp}"/>
+
+    <zip destfile="./Artifact-${component.timestamp}.zip" basedir="${tmp}" update="true"/>
+
+    <delete dir="${tmp}"/>
+  </target>
+
+  <target name="clean">
+    <delete dir="${build}"/>
+    <delete dir="${jar}"/>    
+  </target>
+</project>
