@@ -1,0 +1,86 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.mtn.training</groupId>
+    <artifactId>ci-training</artifactId>
+    <packaging>jar</packaging>
+    <version>1.0-SNAPSHOT-${maven.build.timestamp}</version>
+    <name>maven-task</name>
+
+    <properties>
+    <maven.build.timestamp.format>dd_MM_yy_HH:mm</maven.build.timestamp.format>
+    <time>${maven.build.timestamp}</time>
+    </properties>
+
+	<dependencies>
+	 <dependency>
+	 	<groupId>junit</groupId>
+	 	<artifactId>junit</artifactId>
+	 	<version>4.0</version>
+	 	<scope>test</scope>
+	 </dependency>
+	 <dependency>
+	 	<groupId>commons-collections</groupId>
+	 	<artifactId>commons-collections</artifactId>
+	 	<version>3.0</version>
+	 </dependency>
+	</dependencies>
+
+
+  <build>
+    <plugins>
+      <plugin>
+	 <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>2.6.1</version>
+        <executions>
+          <execution>
+            <id>auto-clean</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>clean</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+<!--
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>2.2</version>
+        <configuration>
+           <archive>
+		<manifest>
+ 		 <addClasspath>true</addClasspath>
+		 <mainClass>com.test.Project</mainClass>
+		</manifest>
+	   </archive>
+        </configuration>
+      </plugin>
+-->
+      <plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-assembly-plugin</artifactId>
+	<version>2.4.1</version>
+	 <executions>
+	  <execution>
+		<id>create-distribution</id>
+		<phase>package</phase>
+		<goals>
+	         <goal>single</goal>
+		</goals>
+	<configuration>
+	<descriptors>
+		<descriptor>assembly.xml</descriptor>
+	</descriptors>
+	</configuration>
+	</execution>
+	</executions>
+      </plugin>
+
+    </plugins>
+  </build>
+
+</project>
